@@ -47,43 +47,57 @@ function App() {
     <div className="App">
       <h1>Weather Checker</h1>
       <div className="container">
-      <input 
-      placeholder="Enter city name"
-      value={city}
-      onChange={(e) => setCity(e.target.value)}
-      />
-      <button onClick={clickSearch}>Search</button>
-      <div className="data">
-        <p>{currentDateTime.toLocaleString()}</p>
-        <p>{weatherData.clouds && `Cloudiness: ${weatherData.clouds.all}%`}</p>
-        <p>{weatherData.weatherdesc && `description: ${weatherData.weatherdesc}`}</p>
-        <p>{weatherData.temp && `temperature: ${Math.round(weatherData.temp -272.15)}°C`}</p>
-        <p>{weatherData.feelsLike && `feelslike: ${Math.round(weatherData.feelsLike - 272.15)}°C`}</p>
-        <p>{weatherData.pressure && `pressure: ${weatherData.pressure}`}</p>
-        <p>{weatherData.humidity && `humidity: ${weatherData.humidity}`}</p>
-        <p>{weatherData.maxTemp && `max temp: ${weatherData.maxTemp}`}</p>
-        <p>{weatherData.minTemp && `min temp: ${weatherData.minTemp}`}</p>
-        <p>{weatherData.visibility && `visibility: ${weatherData.visibility/1000}km`}</p>
-        <p>{weatherData.windSpeed && `wind speed: ${weatherData.windSpeed} m/s`}</p>
-        <div style={{ display: isVisible ? 'block' : 'none' }}>
-        <img src="https://www.svgrepo.com/show/533632/arrow-up.svg" 
-        alt="arrow"
-        style={{
-          transform: `rotate(${weatherData.windDeg}deg)`,
-          width: '10%',
-        }}
-        />
+        <div className="search-container">
+          <input 
+            className="search-input"
+            placeholder="Enter city name"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+          />
+          <button className="search-button" onClick={clickSearch}>Search</button>
         </div>
-        <div className="charts">
+        <div className="weather-info">
+          <div className="current-date-time">
+            <p>{currentDateTime.toLocaleString()}</p>
+          </div>
+          <div className="temperature-info">
+            <p>{weatherData.temp && `Temperature: ${Math.round(weatherData.temp - 272.15)}°C`}</p>
+          </div>
+          <div className="additional-info">
+            {weatherData.weatherdesc && (
+              <div className="weather-desc">
+                <p>Description: {weatherData.weatherdesc}</p>
+              </div>
+            )}
+            {weatherData.feelsLike && (
+              <div className="feels-like">
+                <p>Feels Like: {Math.round(weatherData.feelsLike - 272.15)}°C</p>
+              </div>
+            )}
+            {weatherData.humidity && (
+              <div className="humidity-info">
+                <p>Humidity: {weatherData.humidity}%</p>
+              </div>
+            )}
+            <div className="wind-info" style={{ display: isVisible ? 'block' : 'none' }}>
+              <img 
+                src="https://www.svgrepo.com/show/533632/arrow-up.svg" 
+                alt="arrow"
+                className="wind-direction"
+                style={{ transform: `rotate(${weatherData.windDeg}deg)` }}
+              />
+              {weatherData.windSpeed && <p>Wind Speed: {weatherData.windSpeed} m/s</p>}
+            </div>
+          </div>
+        </div>
         
-          {weatherData.temp && <WeatherRadarChart />}
-
-
+        <div className="chart-container">
+        <div className="charts">
+          {weatherData.temp && <WeatherRadarChart weatherData={weatherData} />}
         </div>
-
-      </div>
-    
-    </div>
+        </div>
+        </div>
+      
     </div>
   );
 }
