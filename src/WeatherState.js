@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 const useWeatherState = () => {
   const [weatherData, setWeatherData] = useState({
@@ -15,7 +15,7 @@ const useWeatherState = () => {
     visibility: null,
   });
 
-  const fetchWeatherData = async (lat, lon, apiKey, setIsVisible) => {
+  const fetchWeatherData = useCallback(async (lat, lon, apiKey, setIsVisible) => {
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
     try {
       const response = await fetch(apiUrl);
@@ -32,15 +32,18 @@ const useWeatherState = () => {
         windDeg: data.wind.deg,
         weatherdesc: data.weather[0].description,
         visibility: data.visibility,
+
       });
       setIsVisible(true);
     } catch (error) {
       console.error(error);
       throw error;
     }
-  };
+  }, []); // Dependencies array for useCallback
 
   return { weatherData, fetchWeatherData };
 };
 
 export default useWeatherState;
+
+

@@ -40,7 +40,8 @@ function App() {
       fetchWeatherData(lat, lon, apiKey, setIsVisible); 
     }
   }, [lat, lon, apiKey, fetchWeatherData]);
-
+  
+  
 
 
   return (
